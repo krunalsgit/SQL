@@ -1,0 +1,111 @@
+
+-- Instruction to follow 
+	--Insert Data Accurate and Appropiate.
+	--Choose data type wisely.
+	--No reference taking.
+	--No Drop of any table should be done.
+	--Insert at least 10 data in the table.
+	--Not to use any previous tables.
+	--Where there is Update there should be Transactions
+	--Good to Have Insert Data with Storeprocuder
+
+Create Table Customer [5]
+	--Id
+	--Name
+	--UserName (Must be unique)
+	--Password
+	--Email (Must be unique)
+	--DOB
+	--Address
+	--ContactNo
+	
+Create Table Salesman
+	--Id
+	--Name
+	--UserName
+	--Password
+	--Email
+	--DOB
+	--Address
+	--ContactNo
+
+Create Table Category
+	--Id
+	--Name
+	
+Create Table Items
+	--Id
+	--Name
+	--Category (link to category)
+	--Rate 
+	--DOM (Date of Manufacture)
+	--DOE (Date of Expire) 
+	
+Create Table ModeOfPayment
+	--Id
+	--Name
+	
+Create Table Orders
+	--Id
+	--OrderNo (Must be Unique)
+	--Customer (link to cu stomer)
+	--OrderQty 
+	--Bill Amount
+	--DOD (Date of Delivery)
+	--Salesman (link to salesman)
+	--DeliveryAddress
+	--City
+	--ContactNo
+	--MOP (Mode of Payment) (link to payment)
+	--OrderStatus (By default 0 if I cancel then should be update to 1)
+	
+Create Table OrderDetails
+	--Id
+	--OrderId (link to order)
+	--ItemId (link to Items)
+	--OrderQty (Order Quantity per Items)
+	--OrderAmount (Qty * Rate)
+
+
+Questions : 
+
+1. After Creating Table , need to update All table with Primary Key , Clustor Key  and Add Identity [5]
+
+2. Create a Parameterized Store Procedure to Insert/Update Data in each of tables listed above. (If Primary key of that table is passed then Update else Insert) [8]
+	E.g : SP_AddEditCustomer (By using this procedure I will be able to insert or update data)
+
+3. Create a Parameterized Store Procedure to retrive all the OrderDetails as per Customer (If CustomerId not passed then retrive all the orders) ( Make sure to Add Everything in Single Procedure) [8]
+	Information I want : 
+		--CustomerName
+		--ItemName
+		--Item Rate
+		--Qty
+		--OrderAmount (Qty * ItemRate)
+		
+4. Create a User Defined Function that will retrive TotalOrderAmount from the OrderDetails Table as per Customer. [8]
+	I just want total amount as per customerid I Passed.
+	
+5. Create a prameterized Store Procedure to retrive all the Order Information as per Customer. (If CustomerId not passed then retrive all the orders) [8]
+	Information I want : 
+		--CustomerName
+		--OrderNo
+		--OrderQty (Total Qty of all the Items) (Using Function)
+		--OrderAmount (Total Amount of Order) (Using Function)
+		--SalesmanName
+		--Address
+		--City
+		--ContactNo
+		--MOP Name
+		--DOD
+		
+6. Create a Parameterized Store Procedure to Cancel Order as per OrderNo (If I pass wrong orderno then message should be there) [8]
+
+7. Create a Parameterized Store Procedure for Login as per Customer/Salesman EmailId and Password.  [10]
+	(If credentials matched then show "Login Successfull" then "Invalid User Input" , If EmailId  is not having in the Table then Create Emaild with Password( Random) ).
+	
+8. Create a Parameterized Store Procedure for Delete Customer from the UserName	[5]
+	--All the orders linked to that customer should also be deleted.
+
+9. Create a OrderDetails using OrderId of Order in a Single Store Procedure. [10]
+
+10. Every Data suppose to be Dynamic (no any Hard Coded) [A(ddition 25 points] [ Example : Name would be Dynamic , amount would be Dyanmic , Date Would be Dynamic , OrderNo  would be Dynamic , etc... ]

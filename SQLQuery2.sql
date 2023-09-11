@@ -1,0 +1,284 @@
+use KrunalDhote351
+
+
+CREATE TABLE DEMO(
+id int identity(1,1)
+)
+
+EXEC sp_RENAME 'DEMO.id','DID','COLUMN'
+
+DROP TABLE DEMO
+
+ALTER TABLE DEMO
+	ADD NAME varchar(100)
+
+
+ALTER TABLE DEMO
+	ADD CONSTRAINT pk_Demo PRIMARY KEY(id)
+
+ALTER TABLE DEMO 
+	DROP CONSTRAINT pk_DEmo
+
+INSERT INTO DEMO(Name) Values('Krunal'),('Saurabh'),('Aadity'),('Aditya'),('Manav'),('Kalyan')
+
+ALTER TABLE DEMO 
+	ADD Phone char(10)
+
+CREATE TABLE DEMO2(
+	id int identity(100,1),
+	Name varchar(100)
+)
+
+DROP TABLE DEMO2
+
+
+ALTER TABLE DEMO2
+	ADD PRIMARY KEY(id)
+
+ALTER TABLE DEMO 
+	ADD id int CONSTRAINT fk_Constraint FOREIGN KEY(id) REFERENCES DEMO2(id)
+
+
+ALTER TABLE DEMO
+	DROP CONSTRAINT fk_Constraint, COLUMN id
+
+ALTER TABLE DEMO 
+	ADD D2id int CONSTRAINT fk_Constraint FOREIGN KEY(D2id) REFERENCES DEMO2(id)
+
+
+UPDATE DEMO	
+	SET NAME='Aaditya' Where DID=3
+
+
+CREATE TABLE RELATION(
+	rID int IDENTITY(200,1),
+	Relation Varchar(100) Not Null Unique
+)
+
+DROP TABLE RELATION
+
+INSERT INTO DEMO2(Name) VALUES ('aadi'),('kunu'),('dada'),('bro'),('manya'),('kallu')
+
+INSERT INTO RELATION(Relation) VALUES ('frd'),('family')
+
+INSERT INTO RELATION VALUES('classmate')
+
+INSERT INTO RELATION VALUES ('self')
+
+ALTER TABLE RELATION
+	ADD PRIMARY KEY(rID)
+
+ALTER TABLE DEMO
+	ADD rID int FOREIGN KEY(rID) REFERENCES RELATION(rID)
+
+UPDATE DEMO2	
+	SET NickName='kunu' where id=101
+
+DELETE FROM DEMO2
+	WHERE id>105
+
+UPDATE DEMO	
+	SET Name='Krunal', Phone='9307871334',D2id=101,rID=203 WHERE DID=1
+
+UPDATE DEMO	
+	SET Phone='9665733071',D2id=102,rID=201 WHERE DID=2
+
+UPDATE DEMO	
+	SET Name='Aaditya', Phone='6278945560',D2id=100,rID=201 WHERE DID=3
+
+UPDATE DEMO	
+	SET Phone='9022195575',D2id=103,rID=200 WHERE DID=4
+
+UPDATE DEMO	
+	SET Phone='9534567890',D2id=104,rID=200 WHERE DID=5
+
+UPDATE DEMO	
+	SET Phone='7734563490',D2id=105,rID=200 WHERE DID=6
+
+
+
+INSERT INTO DEMO(Name) VALUES('Sakshi')
+EXEC sp_RENAME 'DEMO2.Name','NickName','Column'
+
+CREATE TABLE CITY(
+	cID int IDENTITY(101,1),
+	cityName varchar(20) NOT NULL UNIQUE,
+	PRIMARY KEY (cID)
+)
+
+INSERT INTO CITY(cityName) VALUES('Amravati'),('Indor'),('Ahmdabad')
+
+
+
+SELECT NAME,Phone,RELATION FROM DEMO d1 INNER JOIN RELATION R ON d1.rID=R.rID
+
+
+--INNER JOIN FOR 3 TABLE
+SELECT Name,Phone,Relation,NickName FROM DEMO d1 INNER JOIN DEMO2 d2 ON d1.D2id=d2.id INNER JOIN RELATION R ON d1.rID=R.rID
+
+ALTER TABLE DEMO
+	ADD cID int FOREIGN KEY(cID) REFERENCES CITY(cID)
+
+UPDATE DEMO	
+	SET cID=103 WHERE DID=1 OR DID=2
+
+UPDATE DEMO	
+	SET cID=101 WHERE DID>=4
+
+UPDATE DEMO	
+	SET cID=102 WHERE DID=3
+
+UPDATE DEMO 
+	SET rID=202 WHERE DID=7
+
+sp_RENAME 'DEMO.DID','dID'
+
+
+--INNER JOIN 
+SELECT NAME,PHONE,NickName,Relation,CityName FROM DEMO d1
+	INNER JOIN DEMO2 d2 ON d1.D2id=d2.id
+	INNER JOIN RELATION R ON d1.rID=R.rID
+	INNER JOIN CITY c ON d1.cID=c.cID
+
+SELECT NAME,PHONE,Relation,CityName FROM DEMO d1
+	INNER JOIN RELATION R ON d1.rID=R.rID
+	INNER JOIN CITY c ON d1.cID=c.cID
+
+--LEFT JOIN 
+SELECT NAME,PHONE,NickName,Relation,CityName FROM DEMO d1
+	LEFT JOIN DEMO2 d2 ON d1.D2id=d2.id
+	INNER JOIN RELATION R ON d1.rID=R.rID
+	INNER JOIN CITY c ON d1.cID=c.cID
+
+CREATE TABLE Education(
+	Education VARCHAR(50) NOT NULL UNIQUE
+)
+
+ALTER TABLE Education
+	ADD	eID INT IDENTITY(987654321,1) PRIMARY KEY
+
+INSERT INTO Education Values('BE'),('BA'),('MCA'),('MSc'),('BSc')
+
+Truncate Table Education
+
+ALTER TABLE DEMO
+	ADD eID INT FOREIGN KEY REFERENCES Education(eID)
+
+UPDATE DEMO
+	SET eID=987654321 WHERE dID IN (1,4,5,6,7)
+
+--UPDATE MULTIPLE VALUES USING CASE
+UPDATE DEMO
+	SET eID=CASE WHEN dID=2 THEN 987654323
+				 WHEN dID=3 THEN 987654322
+			END
+	WHERE dID IN (2,3)
+
+
+SELECT * FROM DEMO D
+	LEFT JOIN DEMO2 D2 ON D2.id=D.D2id
+	JOIN RELATION R On R.rID=D.rID
+	JOIN CITY C ON C.cID=D.cID
+	Join Education E ON E.eID=D.eID
+	WHERE E.Education='BE' OR C.cityName='Indor'
+	
+SELECT * FROM DEMO WHERE Select int from INFORMATION_SCHEMA.COLUMNS
+
+CREATE UNIQUE INDEX Ind
+	ON DEMO(NAME);
+
+
+SELECT * FROM DEMO.Ind
+
+ALTER TABLE CITY 
+	ADD dt DATE DEFAULT(getdate())
+
+alter table city 
+	drop COLUMN DT 
+
+alter table city
+	add stId int foreign key references state(stId)
+
+CREATE TABLE Country(
+	conId int identity(1,1) primary key,
+	conName varchar(30) Unique Not Null
+)
+
+CREATE TABLE State(
+	stId int primary key,
+	stName varchar(30) Unique Not Null,
+	conId int FOREIGN key REFERENCES country(conID)
+)
+
+
+
+
+INSERT INTO COUNTRY(conName) VALUES ('IND'),('AUS'),('BAN'),('RSA')
+INSERT INTO STATE Values(1,'MAHARASHTRA',1)
+INSERT INTO COUNTRY()
+
+BEGIN TRAN
+	UPDATE CITY SET stID=1 WHERE cID IN (101,104)
+COMMIT TRAN
+ROLLBACK TRAN
+
+ALTER TABLE COUNTRY 
+	ADD emp_id int foreign key references Employee(Emp_ID)
+ALTER TABLE COUNTRY
+	DROP COLUMN emp_id
+
+
+ALTER TABLE EMPLOYEE
+	ADD cID int foreign key references city(cID)
+
+
+BEGIN TRAN
+	UPDATE Employee SET cID=101 WHERE Emp_ID=351
+COMMIT TRAN
+ROLLBACK TRAN
+
+BEGIN TRAN
+	UPDATE Employee
+		SET cID=104 WHERE Emp_ID=352
+COMMIT TRAN
+ROLLBACK TRAN
+
+INSERT INTO STATE VALUES(2,'VICTORIA',2)
+
+select * from Employee
+select * from country
+select * from state
+select * from city
+
+select * from employee e
+	JOIN CITY ct on e.cID=ct.cID
+	JOIN State s on ct.stID =s.stId
+	JOIN country c on s.conID=c.conID
+	where ct.cityName='Amravati'
+	
+
+ALTER TABLE DEMO 
+	ADD conID int foreign key references country(conID)
+
+BEGIN TRAN
+	UPDATE DEMO SET conID=1 WHERE dID>=4
+COMMIT TRAN
+ROLLBACK TRAN
+
+
+
+DEMO
+DEMO2
+RELATION
+CITY
+Education
+
+use KrunalDhote351
+
+SELECT * FROM DEMO
+SELECT * FROM DEMO2
+SELECT * FROM RELATION
+SELECT * FROM CITY
+SELECT * FROM Education
+
+select name from sys.tables  
